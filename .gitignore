@@ -1,5 +1,5 @@
 
-src/Data/
-src/Data/Output/Models/*
+src/Data/*/*
+src/Output/*
 
 
