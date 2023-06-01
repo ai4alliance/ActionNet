@@ -1,5 +1,11 @@
+import os
+
 
 class CFG:
+    group = 'ResNET'    # Exp name
+    name = 'base'      # Sub exp name
+    
+    
     DIR = "./Data/Human Action Recognition/"
     TRAIN_DIR=f"{DIR}train"
     TEST_DIR=f"{DIR}test"
@@ -8,5 +14,9 @@ class CFG:
     
     batch_size = 2
     learning_rate = 0.001
-    num_workers = 4
+    dropout = 0.2
+    weight_decay = 1e-5
+    hidden_size = 256
+    
+    num_workers = len(os.sched_getaffinity(0))
 

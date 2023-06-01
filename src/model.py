@@ -1,9 +1,8 @@
-import torch
-from torch import nn, optim
-from torchvision import transforms, models
+from torch import nn
+from torchvision import models
 
 class ActionClassifier(nn.Module):
-    def __init__(self, ntargets):
+    def __init__(self, hidden_size, ntargets):
         super().__init__()
         resnet = models.resnet50(weights='IMAGENET1K_V1', progress=True)
         modules = list(resnet.children())[:-1] # delete last layer
@@ -18,7 +17,8 @@ class ActionClassifier(nn.Module):
             nn.ReLU(),
             nn.BatchNorm1d(256),
             nn.Dropout(0.2),
-            nn.Linear(256, ntargets)
+            nn.Linear(256, ntargets),
+            nn.Sigmoid()
         )
     
     def forward(self, x):

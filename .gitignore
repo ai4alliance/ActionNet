@@ -1,5 +1,6 @@
 
 src/Data/*/*
 src/Output/*
+src/wandb/*
 
-
+*__pycache__*
