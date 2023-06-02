@@ -3,20 +3,34 @@ from torchvision import transforms, models
 from torch_snippets import *
 from torch.utils.data import Dataset
 
+def get_augment():
+    return transforms.Compose([ 
+        transforms.RandomOrder([
+            transforms.RandomHorizontalFlip(),
+            transforms.RandomAutocontrast(p=0.5),
+            transforms.ColorJitter(0.4, 0.4, 0.4, 0.3),
+            transforms.RandomApply([transforms.Grayscale(3)], p=0.15),
+            transforms.RandomApply([transforms.GaussianBlur(3)], p=0.15),
+            transforms.RandomPosterize(3, p=0.15),
+            transforms.RandomAdjustSharpness(2.0, p=0.25),
+            transforms.RandomEqualize(p=0.25),
+        ]),
+        transforms.RandomApply([transforms.RandomRotation(20, transforms.InterpolationMode.BICUBIC)], p=0.4),
+        transforms.RandomPerspective(0.3, p=0.4),
+    ])
+    
+
 class HumanActionData(Dataset):
-    def __init__(self, file_paths, df_path, cat2ind):
+    def __init__(self, file_paths, df_path, cat2ind, augment):
         super().__init__()
         self.file_paths = file_paths
         self.cat2ind = cat2ind
         self.df = pd.read_csv(df_path)
-        self.transform = transforms.Compose([ 
+        self.transform = transforms.Compose([
             transforms.Resize([224, 244]), 
-            transforms.ToTensor(),
-            # std multiply by 255 to convert img of [0, 255]
-            # to img of [0, 1]
-            transforms.Normalize((0.485, 0.456, 0.406), 
-                                 (0.229*255, 0.224*255, 0.225*255))]
-        )
+            get_augment() if augment else transforms.RandomHorizontalFlip(),
+            models.ResNet50_Weights.DEFAULT.transforms()
+        ])
     
     def __len__(self):
         return len(self.file_paths)
@@ -39,7 +53,23 @@ class HumanActionData(Dataset):
     def choose(self):
         return self[np.random.randint(len(self))]
     
+
+# from PIL import Image
+# import matplotlib.pyplot as plt
+# if __name__=='__main__':
     
+#     img = Image.open('./Data/Human Action Recognition/test/Image_2842.jpg')
     
+#     trans = get_augment()
+#     for _ in range(5):
+#         i = trans(img)
+#         plt.imshow(i)
+#         plt.tight_layout()
+#         plt.axis('off')
+#         plt.figure(figsize=(1,2))
+#         plt.show()
+#     pass
     
-    
+
+
+
