@@ -65,7 +65,7 @@ def validate(data, classifier, loss_fn):
 if __name__ == '__main__':
     args = make_parser().parse_args()
     device = args.device
-    torch.multiprocessing.set_start_method('spawn')
+    #torch.multiprocessing.set_start_method('spawn')
     print('num_workers', args.num_workers)
     
     wandb.login()
@@ -129,7 +129,7 @@ if __name__ == '__main__':
     train_ds = HumanActionData(train_data, CFG.TRAIN_VAL_DF, cat2ind, args.augment, device)
     train_dl = DataLoader(
         train_ds, batch_size=args.batch_size, shuffle=True,
-        collate_fn=train_ds.collate_fn,
+        #collate_fn=train_ds.collate_fn,
         num_workers=args.num_workers,
         drop_last=True,
         pin_memory=False
@@ -138,7 +138,7 @@ if __name__ == '__main__':
     val_ds = HumanActionData(val_data, CFG.TRAIN_VAL_DF, cat2ind, False, device)
     val_dl = DataLoader(
         val_ds, batch_size=args.batch_size, shuffle=False,
-        collate_fn=val_ds.collate_fn,
+        #collate_fn=val_ds.collate_fn,
         num_workers=args.num_workers,
         drop_last=False,
         pin_memory=False
@@ -147,7 +147,7 @@ if __name__ == '__main__':
     test_ds = HumanActionData(test_data, CFG.TRAIN_VAL_DF, cat2ind, False, device)
     test_dl = DataLoader(
         test_ds, batch_size=args.batch_size, shuffle=False,
-        collate_fn=val_ds.collate_fn,
+        #collate_fn=val_ds.collate_fn,
         num_workers=args.num_workers,
         drop_last=False
     )
@@ -170,8 +170,11 @@ if __name__ == '__main__':
         # Train Model
         train_losses, train_accs = AverageMeter(), AverageMeter()
         n_batch = len(train_dl)
-        for i, data in enumerate(tqdm(train_dl, desc="TRAIN")):
-            train_loss, train_acc = train(data, model, optimizer, loss_fn, scaler)
+        for i, (imgs, targets) in enumerate(tqdm(train_dl, desc="TRAIN")):
+            imgs = imgs.to(device)
+            targets = targets.to(device)
+            
+            train_loss, train_acc = train((imgs, targets), model, optimizer, loss_fn, scaler)
             train_losses.update(train_loss.item(), n_batch)
             train_accs.update(train_acc, n_batch)
             wandb.log({"epoch": epoch+1, "train_loss": train_loss, "train_acc": train_acc, 'train_step':epoch*len(train_dl)+i})
@@ -179,8 +182,11 @@ if __name__ == '__main__':
         # Validate Model
         val_losses, valid_accs = AverageMeter(), AverageMeter()
         n_batch = len(val_dl)
-        for i, data in enumerate(tqdm(val_dl, desc="VALID")):
-            val_loss, val_acc, pred, target = validate(data, model, loss_fn)
+        for i, (imgs, targets) in enumerate(tqdm(val_dl, desc="VALID")):
+            imgs = imgs.to(device)
+            targets = targets.to(device)
+            
+            val_loss, val_acc, pred, target = validate((imgs, targets), model, loss_fn)
             val_losses.update(val_loss.item(), n_batch)
             valid_accs.update(val_acc, n_batch)
             wandb.log({"epoch": epoch+1, "val_loss": val_loss, "val_acc": val_acc, 'val_step':epoch*len(val_dl)+i})
@@ -202,8 +208,11 @@ if __name__ == '__main__':
     # Calculate Test Accuracy
     test_accs = AverageMeter()
     n_batch = len(test_dl)
-    for i, data in enumerate(test_dl):
-        _, test_acc, pred, target = validate(data, model, loss_fn)
+    for i, (imgs, targets) in enumerate(test_dl):
+        imgs = imgs.to(device)
+        targets = targets.to(device)
+        
+        _, test_acc, pred, target = validate((imgs, targets), model, loss_fn)
         test_accs.update(test_acc, n_batch)
     wandb.log({"test_acc": test_accs.avg})
     

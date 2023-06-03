@@ -5,6 +5,8 @@ from torch.utils.data import Dataset
 from PIL import Image
 import numpy as np
 import torch
+import torch.nn as nn
+from tqdm import tqdm
 
 # AGU
 def get_augment():
@@ -41,41 +43,6 @@ def get_augment():
 #     ])
     
 
-class HumanActionData(Dataset):
-    def __init__(self, file_paths, df_path, cat2ind, augment, device):
-        super().__init__()
-        self.file_paths = file_paths
-        self.cat2ind = cat2ind
-        self.df = pd.read_csv(df_path)
-        self.device = device
-        self.transform = transforms.Compose([
-            transforms.Resize([224, 244]), 
-            get_augment() if augment else transforms.RandomHorizontalFlip(),
-            models.ResNet50_Weights.DEFAULT.transforms()
-        ])
-    
-    def __len__(self):
-        return len(self.file_paths)
-    
-    def __getitem__(self, ind):
-        file_path = self.file_paths[ind]
-        itarget = int(fname(file_path)[6:-4])
-        target = self.df.iloc[itarget-1]['label']
-        target = self.cat2ind[target]
-        img = Image.open(file_path).convert('RGB')
-        return img, target
-    
-    def collate_fn(self, data):
-        imgs, targets = zip(*data)
-        imgs = torch.stack([self.transform(img) for img in imgs], 0)
-        imgs = imgs.to(self.device)
-        targets = torch.tensor(targets).long().to(self.device)
-        return imgs, targets
-    
-    def choose(self):
-        return self[np.random.randint(len(self))]
-
-
 # class HumanActionData(Dataset):
 #     def __init__(self, file_paths, df_path, cat2ind, augment, device):
 #         super().__init__()
@@ -98,10 +65,71 @@ class HumanActionData(Dataset):
 #         target = self.df.iloc[itarget-1]['label']
 #         target = self.cat2ind[target]
 #         img = Image.open(file_path).convert('RGB')
-#         return self.transform(img), torch.tensor(target).long()
+#         return img, target
+    
+#     def collate_fn(self, data):
+#         imgs, targets = zip(*data)
+#         imgs = torch.stack([self.transform(img) for img in imgs], 0)
+#         imgs = imgs.to(self.device)
+#         targets = torch.tensor(targets).long().to(self.device)
+#         return imgs, targets
     
 #     def choose(self):
 #         return self[np.random.randint(len(self))]
+
+
+
+class Pass(nn.Module):
+    def __init__(self):
+        super().__init__()
+        pass
+    def __call__(self, x):
+        return x
+    
+
+class HumanActionData(Dataset):
+    def __init__(self, file_paths, df_path, cat2ind, augment, device):
+        super().__init__()
+        self.file_paths = file_paths
+        self.cat2ind = cat2ind
+        self.df = pd.read_csv(df_path)
+        self.device = device
+        self.transform = transforms.Compose([
+            transforms.Resize([224, 244]), 
+            get_augment() if augment else Pass(),
+            models.ResNet50_Weights.DEFAULT.transforms()
+        ])
+        
+        self.data, self.label = [], []
+        for ind in tqdm(range(len(self.file_paths))):
+            file_path = self.file_paths[ind]
+            
+            #print(file_path)
+            itarget = int(fname(file_path)[6:-4])
+            target = self.df.iloc[itarget-1]['label']
+            target = self.cat2ind[target]
+            img = Image.open(file_path).convert('RGB')
+            
+            self.data.append(img)
+            self.label.append(target)
+            
+            
+        
+    
+    def __len__(self):
+        return len(self.file_paths)
+    
+    def __getitem__(self, ind):
+        img = self.data[ind]
+        img = self.transform(img)
+        
+        target = self.label[ind]
+        target = torch.tensor(target).long()
+        return img, target
+    
+
+    def choose(self):
+        return self[np.random.randint(len(self))]
 
 
     
