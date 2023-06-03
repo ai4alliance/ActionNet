@@ -1,0 +1,60 @@
+
+cd ./ActionNet/src
+pip install -r requirements.txt
+
+
+python train.py --group 'Debug' --name 'TEST 1' --n_epochs 3 --batch_size 4 --learning_rate 0.001 --dropout 0 --weight_decay 0 --hidden_size 256 --debug
+
+
+python train.py --debug
+
+
+
+Stage 1 Overfit Training Set
+=============================
+
+python train.py --group 'STAGE-1' --name 'Baseline 1' --n_epochs 10 --batch_size 256 --learning_rate 0.001 --dropout 0 --weight_decay 0 --hidden_size 256
+python train.py --group 'STAGE-1' --name 'Baseline 2' --n_epochs 10 --batch_size 128 --learning_rate 0.001 --dropout 0 --weight_decay 0 --hidden_size 256
+python train.py --group 'STAGE-1' --name 'Baseline 2' --n_epochs 10 --batch_size 512 --learning_rate 0.001 --dropout 0 --weight_decay 0 --hidden_size 256
+
+
+
+python train.py --group 'FIT' --name 'Baseline 1' --n_epochs 16 --batch_size 512 --learning_rate 0.001 --dropout 0 --weight_decay 0 --hidden_size 256 --num_workers 0
+python train.py --group 'FIT' --name 'BS 256 LR' --n_epochs 16 --batch_size 256 --learning_rate 0.003 --dropout 0 --weight_decay 0 --hidden_size 256 --num_workers 4
+python train.py --group 'FIT' --name 'BS 256 LR2' --n_epochs 16 --batch_size 256 --learning_rate 0.006 --dropout 0 --weight_decay 0 --hidden_size 256 --num_workers 7
+python train.py --group 'FIT' --name 'BS 128 LR' --n_epochs 16 --batch_size 128 --learning_rate 0.003 --dropout 0 --weight_decay 0 --hidden_size 256 --num_workers 3
+python train.py --group 'FIT' --name 'BS 256 LR HS 512' --n_epochs 16 --batch_size 256 --learning_rate 0.003 --dropout 0 --weight_decay 0 --hidden_size 512 --num_workers 3
+
+python train.py --group 'FIT' --name 'BS 256 LR HS 1024' --n_epochs 16 --batch_size 256 --learning_rate 0.003 --dropout 0 --weight_decay 0 --hidden_size 1024 --num_workers 2
+python train.py --group 'FIT' --name 'BS 512 LR HS 1024' --n_epochs 16 --batch_size 512 --learning_rate 0.003 --dropout 0 --weight_decay 0 --hidden_size 1024 --num_workers 2
+python train.py --group 'FIT' --name 'BS 256 LR HS 2048' --n_epochs 16 --batch_size 256 --learning_rate 0.003 --dropout 0 --weight_decay 0 --hidden_size 2048 --num_workers 2
+
+
+python train.py --group 'FIT' --name 'BS 256 HS 1024' --n_epochs 16 --batch_size 256 --learning_rate 0.001 --dropout 0 --weight_decay 0 --hidden_size 1024 --num_workers 2
+
+# New baseline
+python train.py --group 'GEN' --name 'Baseline' --n_epochs 16 --batch_size 256 --learning_rate 0.003 --dropout 0 --weight_decay 0 --hidden_size 1024 --num_workers 2
+python train.py --group 'GEN' --name 'AUG' --n_epochs 16 --batch_size 256 --learning_rate 0.003 --dropout 0 --weight_decay 0 --hidden_size 1024 --augment --num_workers 3
+python train.py --group 'GEN' --name 'AUG1' --n_epochs 16 --batch_size 256 --learning_rate 0.003 --dropout 0 --weight_decay 0 --hidden_size 2048 --augment --num_workers 4
+
+python train.py --group 'GEN' --name 'Baseline WD1' --n_epochs 16 --batch_size 256 --learning_rate 0.003 --dropout 0 --weight_decay 0.1 --hidden_size 1024 --num_workers 2
+python train.py --group 'GEN' --name 'Baseline WD2' --n_epochs 16 --batch_size 256 --learning_rate 0.003 --dropout 0 --weight_decay 0.01 --hidden_size 1024 --num_workers 2
+python train.py --group 'GEN' --name 'Baseline WD3' --n_epochs 16 --batch_size 256 --learning_rate 0.003 --dropout 0 --weight_decay 0.001 --hidden_size 1024 --num_workers 2
+
+
+python train.py --group 'GEN' --name 'Baseline WD4' --n_epochs 16 --batch_size 256 --learning_rate 0.003 --dropout 0 --weight_decay 0.0001 --hidden_size 1024 --num_workers 2
+python train.py --group 'GEN' --name 'Baseline DO1' --n_epochs 16 --batch_size 256 --learning_rate 0.003 --dropout 0.1 --weight_decay 0 --hidden_size 1024 --num_workers 2
+
+python train.py --group 'GEN' --name 'Baseline DO2' --n_epochs 16 --batch_size 256 --learning_rate 0.003 --dropout 0.2 --weight_decay 0 --hidden_size 1024 --num_workers 2
+python train.py --group 'GEN' --name 'Baseline DO3' --n_epochs 16 --batch_size 256 --learning_rate 0.003 --dropout 0.25 --weight_decay 0 --hidden_size 1024 --num_workers 2
+python train.py --group 'GEN' --name 'Baseline DO4' --n_epochs 16 --batch_size 256 --learning_rate 0.003 --dropout 0.3 --weight_decay 0 --hidden_size 1024 --num_workers 2
+
+
+
+python train.py --group 'FINAL' --name 'Base DO4 AUG WD5' --n_epochs 25 --batch_size 256 --learning_rate 0.003 --dropout 0.3 --weight_decay 0.00002 --hidden_size 1280 --augment --num_workers 5
+
+python train.py --group 'FINAL' --name 'Base DO4 AUG WD5' --n_epochs 25 --batch_size 256 --learning_rate 0.003 --dropout 0.3 --weight_decay 0.00002 --hidden_size 1280 --train_last_nlayer 2 --augment --num_workers 5
+
+
+
+
