@@ -8,8 +8,7 @@ class CFG:
     
     DIR = "./Data/Human Action Recognition"
     TRAIN_DIR=f"{DIR}/train"
-    TEST_DIR=f"{DIR}/test"
-    TRAIN_VAL_DF = f"{DIR}/labels.csv"
+    TRAIN_VAL_DF = f"{DIR}/Training_set.csv"
     
     test_size = 0.15
     valid_size = 0.15

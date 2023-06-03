@@ -9,7 +9,7 @@ class ActionClassifier(nn.Module):
         modules = list(resnet.children())[:-1] # delete last layer
 
         self.resnet = nn.Sequential(*modules)
-        for param in self.resnet.parameters():
+        for param in self.resnet[:-train_last_nlayer].parameters():
             param.requires_grad = False
             
         self.fc = nn.Sequential(

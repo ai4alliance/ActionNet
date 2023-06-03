@@ -13,7 +13,7 @@ python train.py --debug
 Stage 1 Overfit Training Set
 =============================
 
-python train.py --group 'STAGE-1' --name 'Baseline 1' --n_epochs 10 --batch_size 256 --learning_rate 0.001 --dropout 0 --weight_decay 0 --hidden_size 256
+python train.py --group 'BASELINE' --name 'Base' --n_epochs 10 --batch_size 256 --learning_rate 0.001 --dropout 0 --weight_decay 0 --hidden_size 256 --augment --num_workers 7
 python train.py --group 'STAGE-1' --name 'Baseline 2' --n_epochs 10 --batch_size 128 --learning_rate 0.001 --dropout 0 --weight_decay 0 --hidden_size 256
 python train.py --group 'STAGE-1' --name 'Baseline 2' --n_epochs 10 --batch_size 512 --learning_rate 0.001 --dropout 0 --weight_decay 0 --hidden_size 256
 
@@ -55,6 +55,39 @@ python train.py --group 'FINAL' --name 'Base DO4 AUG WD5' --n_epochs 25 --batch_
 
 python train.py --group 'FINAL' --name 'Base DO4 AUG WD5' --n_epochs 25 --batch_size 256 --learning_rate 0.003 --dropout 0.3 --weight_decay 0.00002 --hidden_size 1280 --train_last_nlayer 2 --augment --num_workers 5
 
+
+
+
+
+
+python train.py --group 'Baseline' --name 'BASE' --n_epochs 25 --batch_size 256 --learning_rate 0.001 --dropout 0 --weight_decay 0 --hidden_size 256 --num_workers 3
+python train.py --group 'Baseline' --name 'WD1' --n_epochs 25 --batch_size 256 --learning_rate 0.001 --dropout 0 --weight_decay 0.00002 --hidden_size 256 --num_workers 3
+python train.py --group 'Baseline' --name 'WD2' --n_epochs 25 --batch_size 256 --learning_rate 0.001 --dropout 0 --weight_decay 0.0002 --hidden_size 256 --num_workers 3
+python train.py --group 'Baseline' --name 'WD3' --n_epochs 25 --batch_size 256 --learning_rate 0.001 --dropout 0 --weight_decay 0.0008 --hidden_size 256 --num_workers 3
+
+python train.py --group 'Baseline' --name 'BASE2' --n_epochs 25 --batch_size 256 --learning_rate 0.001 --dropout 0 --weight_decay 0 --hidden_size 1024 --num_workers 3
+python train.py --group 'Baseline' --name 'BASE2 DO1' --n_epochs 25 --batch_size 256 --learning_rate 0.001 --dropout 0.2 --weight_decay 0 --hidden_size 1024 --num_workers 3
+python train.py --group 'Baseline' --name 'BASE2 DO2' --n_epochs 25 --batch_size 256 --learning_rate 0.001 --dropout 0.25 --weight_decay 0 --hidden_size 1024 --num_workers 3
+python train.py --group 'Baseline' --name 'BASE2 DO3' --n_epochs 25 --batch_size 256 --learning_rate 0.001 --dropout 0.3 --weight_decay 0 --hidden_size 1024 --num_workers 3
+
+
+
+python train.py --group 'Augment' --name 'BASE' --n_epochs 25 --batch_size 256 --learning_rate 0.001 --dropout 0 --weight_decay 0 --hidden_size 1024 --augment --num_workers 7
+python train.py --group 'Augment' --name 'BASE HS1' --n_epochs 30 --batch_size 256 --learning_rate 0.001 --dropout 0 --weight_decay 0 --hidden_size 2048 --augment --num_workers 7
+
+python train.py --group 'Augment' --name 'BASE HS1 TL1' --n_epochs 30 --batch_size 256 --learning_rate 0.001 --dropout 0 --weight_decay 0 --hidden_size 2048 --train_last_nlayer 1 --augment --num_workers 7
+
+python train.py --group 'Augment' --name 'BASE HS1 TL3' --n_epochs 35 --batch_size 256 --learning_rate 0.001 --dropout 0 --weight_decay 0 --hidden_size 2048 --train_last_nlayer 3 --augment --num_workers 7
+
+python train.py --group 'Augment' --name 'BASE HS1 TL3 DO3' --n_epochs 35 --batch_size 256 --learning_rate 0.001 --dropout 0.3 --weight_decay 0 --hidden_size 2048 --train_last_nlayer 3 --augment --num_workers 7
+
+python train.py --group 'Augment' --name 'BASE HS1 TL3 WD1' --n_epochs 35 --batch_size 256 --learning_rate 0.001 --dropout 0 --weight_decay 0.001 --hidden_size 2048 --train_last_nlayer 3 --augment --num_workers 7
+
+python train.py --group 'Augment' --name 'BASE HS1 TL1' --n_epochs 20 --batch_size 256 --learning_rate 0.001 --dropout 0.2 --weight_decay 0 --hidden_size 256 --train_last_nlayer 1 --augment --num_workers 7
+
+
+
+python train.py --group 'Augment' --name 'BASE HS2 TL2' --n_epochs 30 --batch_size 256 --learning_rate 0.001 --dropout 0.2 --weight_decay 0 --hidden_size 512 --train_last_nlayer 2 --augment --num_workers 7
 
 
 
