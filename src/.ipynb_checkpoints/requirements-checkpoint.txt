@@ -1,5 +1,0 @@
-torch_snippets 
-torch_summary
-wandb
-addict
-
