@@ -5,6 +5,11 @@ This repository contains code and documentation for training a ResNet model on a
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-Link-green.svg)](https://www.shamimahamed.com/actionnet)
 
+#### View experiments on [W&B](https://wandb.ai/shamim/ActionNet)
+[![Open in Wandb](https://img.shields.io/badge/Open%20in-Wandb-blue)](https://wandb.ai/shamim/ActionNet)
+
+![](Images/wandb.jpg?raw=true)
+
 ### Download Data
 Check `src/Data/README.md` file for instruction on how to setup dataset
 
