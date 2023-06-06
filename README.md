@@ -10,16 +10,17 @@ This repository contains code and documentation for training a ResNet model on a
 
 ![](Images/wandb.jpg?raw=true)
 
-### Download Data
+# How to use the code
+### 1. Download Data
 Check `src/Data/README.md` file for instruction on how to setup dataset
 
-### Setup W&B api key
+### 2. Setup W&B api key
 ``` CLI
 export WANDB_API_KEY=<your_key>
 echo $WANDB_API_KEY
 ```
 
-### Training
+### 3. Training
 ``` CLI
 python train.py --n_epochs 10 --batch_size 128 --learning_rate 0.001
 ```
