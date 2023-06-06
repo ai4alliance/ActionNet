@@ -3,6 +3,8 @@ This repository contains code and documentation for training a ResNet model on a
 
 #### Show your appreciation: If you find this project useful, please consider showing your support by starring it on GitHub. Your support means a lot! :star:
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Link-green.svg)](https://www.shamimahamed.com/actionnet)
+
 ### Download Data
 Check `src/Data/README.md` file for instruction on how to setup dataset
 
